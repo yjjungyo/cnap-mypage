@@ -1,0 +1,355 @@
+http GET http://www.example.com
+
+
+
+zookeeper-server-start.bat ../../config/zookeeper.properties
+
+kafka-server-start.bat ../../config/server.properties
+
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ttest
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic ttest --from-beginning
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic mall --from-beginning
+
+
+
+
+강사님이 모두에게:  10:07 AM
+http://msaschool.io
+강사님이 모두에게:  10:16 AM
+http://www.msaez.io    접속키 : cloud / 정용진 / yjjungyo@sk.com
+
+
+
+
+Zoom ID : 826 7634 6176 / cloud@#4
+
+
+http://jsonplaceholder.typicode.com/todos
+
+httpie :
+
+c:\> http GET http://jsonplaceholder.typicode.com/todos
+ 
+c:\>http POST http://jsonplaceholder.typicode.com/todos completed=true title="cna class test" userId=10
+
+
+
+
+
+
+
+
+Project dependencies
+
+Spring Data JPA SQL
+H2 Database SQL
+Rest Repositories HAL Explorer WEB
+
+
+
+netstat -ano | findstr :포트번호
+
+spring :
+
+	@Autowired
+
+
+admin20@gkn2021hotmail.onmicrosoft.com / adminskcc1234!
+
+resource group name :  admin20-rsrcgroup
+
+
+Azure 클러스터 생성
+az aks create --resource-group admin20-rsrcgroup --name admin20-cluster --node-count 3 --enable-addons monitoring --generate-ssh-keys
+
+
+
+Azure 컨테이너 레지스트리 생성
+az acr create --resource-group admin20-rsrcgroup --name admin20 --sku Basic
+
+Azure 컨테이너 레지스트리 로그인  //docker 올릴때, 인증처리용으로 로그인한다.
+az acr login --name admin20
+
+
+					root@labs-1535277446:~# az acr create --resource-group admin20-rsrcgroup --name admin20 --sku Basic
+					{- Finished ..
+					  "adminUserEnabled": false,
+					  "creationDate": "2020-10-12T08:10:28.260891+00:00",
+					  "dataEndpointEnabled": false,
+					  "dataEndpointHostNames": [],
+					  "encryption": {
+						"keyVaultProperties": null,
+						"status": "disabled"
+					  },
+					  "id": "/subscriptions/ca751422-4fbc-44c6-84d0-15838d62095b/resourceGroups/admin20-rsrcgroup/providers/Microsoft.ContainerRegistry/registries/admin20",
+					  "identity": null,
+					  "location": "koreacentral",
+					  "loginServer": "admin20.azurecr.io",
+					  "name": "admin20",
+					  "networkRuleSet": null,
+					  "policies": {
+						"quarantinePolicy": {
+						  "status": "disabled"
+						},
+						"retentionPolicy": {
+						  "days": 7,
+						  "lastUpdatedTime": "2020-10-12T08:10:30.718585+00:00",
+						  "status": "disabled"
+						},
+						"trustPolicy": {
+						  "status": "disabled",
+						  "type": "Notary"
+						}
+					  },
+					  "privateEndpointConnections": [],
+					  "provisioningState": "Succeeded",
+					  "publicNetworkAccess": "Enabled",
+					  "resourceGroup": "admin20-rsrcgroup",
+					  "sku": {
+						"name": "Basic",
+						"tier": "Basic"
+					  },
+					  "status": null,
+					  "storageAccount": null,
+					  "systemData": {
+						"createdAt": "2020-10-12T08:10:28.2608913+00:00",
+						"createdBy": "admin20@gkn2021hotmail.onmicrosoft.com",
+						"createdByType": "User",
+						"lastModifiedAt": "2020-10-12T08:10:28.2608913+00:00",
+						"lastModifiedBy": "admin20@gkn2021hotmail.onmicrosoft.com",
+						"lastModifiedByType": "User"
+					  },
+					  "tags": {},
+					  "type": "Microsoft.ContainerRegistry/registries"
+					}
+					root@labs-1535277446:~# az acr login --name admin20
+					Login Succeeded
+					root@labs-1535277446:~# 
+
+
+Azure 클러스터(AKS)에 레지스트리(ACR) 붙이기
+az aks update -n admin20-cluster -g admin20-rsrcgroup --attach-acr admin20
+
+
+Azure 클러스터 토큰 가져오기
+az aks get-credentials --resource-group admin20-rsrcgroup --name admin20-cluster
+
+
+--- 확인
+
+root@labs-1535277446:~# kubectl get all
+NAME                 TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+service/kubernetes   ClusterIP   10.0.0.1     <none>        443/TCP   18m
+
+root@labs-1535277446:~# kubectl get nodes  
+NAME                                STATUS   ROLES   AGE   VERSION
+aks-nodepool1-12895122-vmss000000   Ready    agent   17m   v1.17.11
+aks-nodepool1-12895122-vmss000001   Ready    agent   17m   v1.17.11
+aks-nodepool1-12895122-vmss000002   Ready    agent   17m   v1.17.11
+
+
+
+
+// local - msaez 가상 환견에서 git , docker , aks 
+
+timezone check 
+
+
+git clone
+
+
+
+//jar 를 만들어 준다.
+
+root:/home/project/cna-order: mvn package
+
+docker image  build :
+
+root@labs-1535277446:/home/project/cna-order/target# docker build -t admin20.azurecr.io/order:v1
+
+
+docker image push : 
+
+
+root@labs-1535277446:/home/project/cna-order# az acr login --name admin20
+Login Succeeded
+root@labs-1535277446:/home/project/cna-order# docker push admin20.azurecr.io/order:v1
+
+
+//kafka 설치
+
+//istio 설치
+
+root@labs-1535277446:/home/project/istio-1.7.1# kubectl get ns
+NAME              STATUS   AGE
+default           Active   20h
+istio-system      Active   3m23s
+kafka             Active   11m
+kube-node-lease   Active   20h
+kube-public       Active   20h
+kube-system       Active   20h
+
+
+kubectl create deploy order --image=admin20.azurecr.io/order:v1 -n tutorial
+
+// pod 에러 발생 시, 
+kubectl describe pod/order-6d56bb9758-plg72 -n tutorial
+
+// app 의 로그를 확인
+kubectl logs pod/order-6d56bb9758-plg72 -c order -n tutorial
+
+
+//order service create(run ) 8080 은 docker file 의 서비스 포트  application.yaml 파일의 docker profile 과 일치
+
+ kubectl expose deploy order --type=ClusterIP --port=8080
+ 
+ 
+ 
+ 
+ root@labs-1535277446:/home/project/istio-1.7.1# kubectl get all -n tutorial
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/delivery-8554cb87bd-bfrkw   2/2     Running   0          6m58s
+pod/gateway-7666f6fb44-q29zg    2/2     Running   0          6m12s
+pod/mypage-6b85857bbc-mtp9l     2/2     Running   0          6m34s
+pod/order-6d56bb9758-plg72      2/2     Running   0          14m
+
+NAME               TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/delivery   ClusterIP      10.0.200.169   <none>        8080/TCP         99s
+service/gateway    LoadBalancer   10.0.78.33     20.41.115.3   8080:32522/TCP   34s
+service/mypage     ClusterIP      10.0.248.191   <none>        8080/TCP         81s
+service/order      ClusterIP      10.0.32.252    <none>        8080/TCP         2m15s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/delivery   1/1     1            1           6m59s
+deployment.apps/gateway    1/1     1            1           6m13s
+deployment.apps/mypage     1/1     1            1           6m35s
+deployment.apps/order      1/1     1            1           14m
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/delivery-8554cb87bd   1         1         1       6m59s
+replicaset.apps/gateway-7666f6fb44    1         1         1       6m13s
+replicaset.apps/mypage-6b85857bbc     1         1         1       6m35s
+replicaset.apps/order-6d56bb9758      1         1         1       14m
+root@labs-1535277446:/home/project/istio-1.7.1# 
+
+
+이벤트 수신하기
+
+새로운 shell 을 열니다.
+eventTopic 이라는 토픽에 발행된 메세지를 수신합니다.
+
+kubectl -n kafka exec -ti my-kafka-0 -- /usr/bin/kafka-console-consumer --bootstrap-server my-kafka:9092 --topic mall --from-beginning
+
+3번에서 사용한 메세지가 출력 되어야 합니다.
+–from-beginning 옵션은 해당 토픽에 있는 데이터를 처음부터 출력해 달라는 의미입니다.
+
+
+
+
+
+gateway 's public ip
+http://20.41.115.3:8080/
+
+root@labs-1535277446:/home/project/istio-1.7.1# kubectl exec -it pod/nginx-86c57db685-xxxjf -- /bin/sh
+# apt-get install curl
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+curl is already the newest version (7.64.0-4+deb10u1).
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+# curl
+curl: try 'curl --help' or 'curl --manual' for more information
+# curl http://orders:8080
+curl: (6) Could not resolve host: orders
+# ^[[A^[[D : not found
+# in/sh: 4: 
+# 
+# curl http://order.tutorial:8080
+{
+  "_links" : {
+    "orders" : {
+      "href" : "http://order.tutorial:8080/orders{?page,size,sort}",
+      "templated" : true
+    },
+    "profile" : {
+      "href" : "http://order.tutorial:8080/profile"
+    }
+  }
+}# 
+# 
+
+
+
+
+
+
+//istio timeout 설정 
+
+kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs-order-network-rule
+  namespace: tutorial
+spec:
+  hosts:
+  - order
+  http:
+  - route:
+    - destination:
+        host: order
+    timeout: 3s
+EOF
+
+
+root@labs-1535277446:/home/project/istio-1.7.1# kubectl get vs -n tutorial
+NAME                    GATEWAYS   HOSTS     AGE
+vs-order-network-rule              [order]   48s
+
+부하테스트 툴(Siege) 설치 및 Order 서비스 Load Testing 
+kubectl run siege --image=apexacme/siege-nginx -n tutorial 
+
+kubectl exec -it siege -c siege -n tutorial -- /bin/bash
+root@labs-1535277446:/home/project/istio-1.7.1# kubectl exec -it siege-5c7c46b788-sdk2s -c siege -n tutorial -- /bin/bash
+
+siege -c30 -t20S -v --content-type "application/json" 'http://order:8080/orders POST {"productId": "1001", "qty":5}'
+
+
+root@labs-1535277446:/home/project/istio-1.7.1# kubectl get pod -n tutorial
+
+
+=========================
+
+GIT 기본
+널리 사용되고 있는 코드 형상관리 도구인 깃헙(Github)의 기본 사용방법에 대해 학습
+폴더 생성
+mkdir gittest
+cd gittest
+git init
+git add .
+echo “hello” > hello.txt
+git status
+git reset
+git commit -m “init”
+git config --global user.email "you@example.com"
+git config --global user.name “Your Name”
+git remote -v
+git remote add origin https://github.com/[YourName]/demo.git
+git push -u origin master
+git pull origin master
+
+
+C:\cnap\bookmarket\customerview>git config --global user.email yjjungyo@gmail.com
+
+C:\cnap\bookmarket\customerview>git config --global user.name yjjungyo
+
+C:\cnap\bookmarket\customerview>git remote -v
+
+C:\cnap\bookmarket\customerview>git remote add origin https://github.com/yjjungyo/cnap-mypage
+
+
+git commit -m “init”
+git push -u origin master
+
+
